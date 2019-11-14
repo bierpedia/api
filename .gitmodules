@@ -1,0 +1,3 @@
+[submodule "modules/dto"]
+	path = modules/dto
+	url = ../bierpedia_dto

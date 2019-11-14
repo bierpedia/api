@@ -1,3 +1,5 @@
+using Newtonsoft.Json;
+
 namespace Bierpedia.Api.Model {
 
 	/// <summary>
@@ -6,11 +8,15 @@ namespace Bierpedia.Api.Model {
 	/// <remarks>
 	/// EF Core does not support many-to-many relationships yet, see
 	/// https://github.com/aspnet/EntityFrameworkCore/issues/1368
-	/// /// </remarks>
+	/// </remarks>
 	public class BeerBeerType {
+		[JsonIgnore]
 		public int BeerId { get; set; }
-		public Beer Beer { get; set; }
+		[JsonIgnore]
+		public virtual Beer Beer { get; set; }
+		[JsonIgnore]
 		public int BeerTypeId { get; set; }
-		public BeerType BeerType { get; set; }
+		
+		public virtual BeerType BeerType { get; set; }
 	}
 }

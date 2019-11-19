@@ -1,4 +1,3 @@
-using Newtonsoft.Json;
 
 namespace Bierpedia.Api.Model {
 
@@ -10,11 +9,8 @@ namespace Bierpedia.Api.Model {
 	/// https://github.com/aspnet/EntityFrameworkCore/issues/1368
 	/// </remarks>
 	public class BeerBeerType {
-		[JsonIgnore]
 		public int BeerId { get; set; }
-		[JsonIgnore]
 		public virtual Beer Beer { get; set; }
-		[JsonIgnore]
 		public int BeerTypeId { get; set; }
 		
 		public virtual BeerType BeerType { get; set; }

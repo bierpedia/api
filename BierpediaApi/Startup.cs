@@ -29,7 +29,7 @@ namespace Bierpedia.Api {
 			services.AddApiVersioning();
 			services.AddDbContext<ApiContext>();
 
-			// newtonsoft json, because system.text.json does not has ReferenceLoopHandling	
+			// newtonsoft json, because System.Text.Json does not has ReferenceLoopHandling
 			services.AddControllers().AddNewtonsoftJson(options => {
 				options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
 			});

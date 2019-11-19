@@ -30,12 +30,9 @@ namespace Bierpedia.Api.Model {
 				Name = Name,
 				Description = Description,
 				_Links = new DTO.Beer.Links {
-					Self = urlHelper.GetPathByControllerAction<Controller.Beers>(nameof(Controller.Beers.Get), 
-						values: new { id = this.Id }),
-					Breweries = urlHelper.GetPathByControllerAction<Controller.Beers>(nameof(Controller.Beers.Breweries), 
-						values: new { id = this.Id }),
-					BeerTypes = urlHelper.GetPathByControllerAction<Controller.Beers>(nameof(Controller.Beers.BeerTypes), 
-						values: new { id = this.Id }),
+					Self = urlHelper.ActionLink((Controller.Beers b) => b.Get(this.Id)),
+					Breweries = urlHelper.ActionLink((Controller.Beers b) => b.Breweries(this.Id)),
+					BeerTypes = urlHelper.ActionLink((Controller.Beers b) => b.BeerTypes(this.Id)),
 				}
 			};
 		}

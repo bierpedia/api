@@ -24,7 +24,7 @@ namespace Bierpedia.Api {
 
 		public void ConfigureServices(IServiceCollection services) {
 			services.Configure<RouteOptions>(options => options.LowercaseUrls = true);
-
+			services.AddCors();
 			services.AddControllers();
 			services.AddApiVersioning();
 			services.AddDbContext<ApiContext>();
@@ -39,6 +39,10 @@ namespace Bierpedia.Api {
 			if (env.IsDevelopment()) {
 				app.UseDeveloperExceptionPage();
 			}
+
+			app.UseCors(
+				options => options.WithOrigins("http://localhost:8080").AllowAnyMethod()
+			);
 
 			app.UseRouting();
 			app.UseAuthorization();

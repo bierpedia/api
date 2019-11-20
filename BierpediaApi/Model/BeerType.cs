@@ -24,8 +24,8 @@ namespace Bierpedia.Api.Model {
 				Name = Name,
 				Description = Description,
 				_Links = new DTO.BeerType.Links {
-					Self = urlHelper.ActionLink((Controller.BeerTypes b) => b.Get(this.Id)),
-					Parent = this.ParentId.HasValue ? urlHelper.ActionLink((Controller.BeerTypes b) => b.Get(this.ParentId.Value)) : null
+					Self = urlHelper.ActionLink((Controller.BeerTypes b) => b.Get(this.Slug)),
+					Parent = this.ParentId.HasValue ? urlHelper.ActionLink((Controller.BeerTypes b) => b.Get(this.Parent.Slug)) : null
 				}
 			};
 		}

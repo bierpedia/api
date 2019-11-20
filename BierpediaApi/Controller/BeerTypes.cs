@@ -18,9 +18,10 @@ namespace Bierpedia.Api.Controller {
 		public async Task<ActionResult<IEnumerable<DTO.BeerType>>> Get() => 
 			await apiContext.BeerTypes.ToDTO(this.Url).ToListAsync();
 
-		[HttpGet("{id}")]
-		public async Task<ActionResult<DTO.BeerType>> Get(int id) {
-			return await apiContext.BeerTypes.Where(b => b.Id == id)
+		[HttpGet("{slug}")]
+		public async Task<ActionResult<DTO.BeerType>> Get(string slug) {
+			return await apiContext.BeerTypes.Where(bt => bt.Slug == slug)
+				.Include(bt => bt.Parent)
 				.ToDTO(this.Url).SingleAsync();
 		}
 	}

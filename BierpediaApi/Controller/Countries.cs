@@ -18,9 +18,9 @@ namespace Bierpedia.Api.Controller {
 		public async Task<ActionResult<IEnumerable<DTO.Country>>> Get() => 
 			await apiContext.Countries.ToDTO(this.Url).ToListAsync();
 
-		[HttpGet("{id}")]
-		public async Task<ActionResult<DTO.Country>> Get(int id) {
-			return await apiContext.Countries.Where(b => b.Id == id)
+		[HttpGet("{slug}")]
+		public async Task<ActionResult<DTO.Country>> Get(string slug) {
+			return await apiContext.Countries.Where(country => country.Slug == slug)
 				.ToDTO(this.Url).SingleAsync();
 		}
 	}

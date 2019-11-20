@@ -17,32 +17,34 @@ namespace Bierpedia.Api.Controller {
 		
 		[HttpGet]
 		public async Task<ActionResult<IEnumerable<DTO.Beer>>> List() =>
-			await apiContext.Beers.ToDTO(this.Url).ToListAsync();
+			await apiContext.Beers.Take(10).ToDTO(this.Url).ToListAsync();
 
-		[HttpGet("{id}")]
-		public async Task<ActionResult<DTO.Beer>> Get(int id) {
-			return await apiContext.Beers.Where(b => b.Id == id)
+		[HttpGet("{slug}")]
+		public async Task<ActionResult<DTO.Beer>> Get(string slug) {
+			return await apiContext.Beers.Where(b => b.Slug == slug)
 				.ToDTO(this.Url)
 				.SingleAsync();
 		}
 
-		[HttpGet("{id}/breweries")]
-		public async Task<ActionResult<IEnumerable<DTO.Brewery>>> Breweries(int id) =>
+		[HttpGet("{slug}/breweries")]
+		public async Task<ActionResult<IEnumerable<DTO.Brewery>>> Breweries(string slug) =>
 			 await apiContext.Beers
 				.Include(beer => beer.BeerBreweries)
 				.ThenInclude(bb => bb.Brewery)
-				.Where(beer => beer.Id == id)
+				.ThenInclude(brewery => brewery.Country)
+				.Where(beer => beer.Slug == slug)
 				.SelectMany(beer => beer.BeerBreweries)
 				.Select(bb => bb.Brewery)
 				.ToDTO(this.Url)
 				.ToListAsync();
 
-		[HttpGet("{id}/beerTypes")]
-		public async Task<ActionResult<IEnumerable<DTO.BeerType>>> BeerTypes(int id) =>
+		[HttpGet("{slug}/beerTypes")]
+		public async Task<ActionResult<IEnumerable<DTO.BeerType>>> BeerTypes(string slug) =>
 			 await apiContext.Beers
 				.Include(beer => beer.BeerBeerTypes)
 				.ThenInclude(bb => bb.BeerType)
-				.Where(beer => beer.Id == id)
+				.ThenInclude(bt => bt.Parent)
+				.Where(beer => beer.Slug == slug)
 				.SelectMany(beer => beer.BeerBeerTypes)
 				.Select(bb => bb.BeerType)
 				.ToDTO(this.Url)

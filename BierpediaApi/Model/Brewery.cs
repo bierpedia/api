@@ -21,8 +21,8 @@ namespace Bierpedia.Api.Model {
 				Id = Id,
 				Name = Name,
 				_Links = new DTO.Brewery.Links {
-					Self = urlHelper.ActionLink((Controller.Breweries b) => b.Get(this.Id)),
-					Country = urlHelper.ActionLink((Controller.Countries b) => b.Get(this.CountryId)),
+					Self = urlHelper.ActionLink((Controller.Breweries b) => b.Get(this.Slug)),
+					Country = urlHelper.ActionLink((Controller.Countries b) => b.Get(this.Country.Slug)),
 				}
 			};
 		}

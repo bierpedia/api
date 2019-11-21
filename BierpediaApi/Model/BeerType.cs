@@ -20,10 +20,10 @@ namespace Bierpedia.Api.Model {
 		public DTO.BeerType ToDTO(IUrlHelper urlHelper) {
 			
 			return new DTO.BeerType {
-				Id = Id,
+				Slug = Slug,
 				Name = Name,
 				Description = Description,
-				_Links = new DTO.BeerType.Links {
+				Links = new DTO.BeerType.BeerTypeLinks {
 					Self = urlHelper.ActionLink((Controller.BeerTypes b) => b.Get(this.Slug)),
 					Parent = this.ParentId.HasValue ? urlHelper.ActionLink((Controller.BeerTypes b) => b.Get(this.Parent.Slug)) : null
 				}

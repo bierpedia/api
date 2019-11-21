@@ -16,7 +16,7 @@ namespace Bierpedia.Api.Controller {
 		
 		[HttpGet]
 		public async Task<ActionResult<IEnumerable<DTO.BeerType>>> Get() => 
-			await apiContext.BeerTypes.ToDTO(this.Url).ToListAsync();
+			await apiContext.BeerTypes.Include(bt => bt.Parent).ToDTO(this.Url).ToListAsync();
 
 		[HttpGet("{slug}")]
 		public async Task<ActionResult<DTO.BeerType>> Get(string slug) {

@@ -15,8 +15,10 @@ namespace Bierpedia.Api.Controller {
 		}
 		
 		[HttpGet]
-		public async Task<ActionResult<IEnumerable<DTO.Country>>> Get() => 
-			await apiContext.Countries.ToDTO(this.Url).ToListAsync();
+		public async Task<ActionResult<IList<DTO.Country>>> Get() {
+			return await apiContext.Countries.ToDTO(this.Url).ToListAsync();
+		}
+
 
 		[HttpGet("{slug}")]
 		public async Task<ActionResult<DTO.Country>> Get(string slug) {

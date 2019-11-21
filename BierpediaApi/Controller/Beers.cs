@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Bierpedia.Api.Mapping;
 using Microsoft.AspNetCore.Routing;
+using Bierpedia.Api.Model;
 
 namespace Bierpedia.Api.Controller {
 	public class Beers : BeerpediaApiController {
@@ -16,8 +17,19 @@ namespace Bierpedia.Api.Controller {
 		}
 		
 		[HttpGet]
-		public async Task<ActionResult<IEnumerable<DTO.Beer>>> List() =>
-			await apiContext.Beers.Take(10).ToDTO(this.Url).ToListAsync();
+		public async Task<ActionResult<DTO.PagedResult<DTO.Beer>>> List(int page = 1, int perPage = 10) {
+			var count = await apiContext.Beers.CountAsync();
+			var result = await apiContext.Beers
+				.OrderBy(b => b.Name)
+				.IncludeBreweries()
+				.IncludeBeerTypes()
+				.Paginate(page, perPage)
+				.ToDTO(this.Url)
+				.ToListAsync();
+
+			return PagedResultFactory.Create<DTO.Beer>(page, perPage, count, result, this.Url);
+		}
+
 
 		[HttpGet("{slug}")]
 		public async Task<ActionResult<DTO.Beer>> Get(string slug) {
@@ -29,21 +41,18 @@ namespace Bierpedia.Api.Controller {
 		[HttpGet("{slug}/breweries")]
 		public async Task<ActionResult<IEnumerable<DTO.Brewery>>> Breweries(string slug) =>
 			 await apiContext.Beers
-				.Include(beer => beer.BeerBreweries)
-				.ThenInclude(bb => bb.Brewery)
-				.ThenInclude(brewery => brewery.Country)
+				.IncludeBreweries()
 				.Where(beer => beer.Slug == slug)
 				.SelectMany(beer => beer.BeerBreweries)
 				.Select(bb => bb.Brewery)
 				.ToDTO(this.Url)
 				.ToListAsync();
+		
 
 		[HttpGet("{slug}/beerTypes")]
 		public async Task<ActionResult<IEnumerable<DTO.BeerType>>> BeerTypes(string slug) =>
 			 await apiContext.Beers
-				.Include(beer => beer.BeerBeerTypes)
-				.ThenInclude(bb => bb.BeerType)
-				.ThenInclude(bt => bt.Parent)
+				.IncludeBeerTypes()
 				.Where(beer => beer.Slug == slug)
 				.SelectMany(beer => beer.BeerBeerTypes)
 				.Select(bb => bb.BeerType)

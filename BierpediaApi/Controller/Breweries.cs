@@ -1,3 +1,4 @@
+using System.Runtime.CompilerServices;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,7 +17,7 @@ namespace Bierpedia.Api.Controller {
 		}
 		
 		[HttpGet]
-		public async Task<ActionResult<IEnumerable<DTO.Brewery>>> Get() => 
+		public async Task<ActionResult<IList<DTO.Brewery>>> Get() => 
 			await apiContext.Breweries.ToDTO(this.Url).ToListAsync();
 
 		[HttpGet("{slug}")]

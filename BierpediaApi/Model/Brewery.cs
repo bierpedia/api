@@ -18,9 +18,9 @@ namespace Bierpedia.Api.Model {
 
 		public DTO.Brewery ToDTO(IUrlHelper urlHelper) {
 			return new DTO.Brewery {
-				Id = Id,
+				Slug = Slug,
 				Name = Name,
-				_Links = new DTO.Brewery.Links {
+				Links = new DTO.Brewery.BreweryLinks {
 					Self = urlHelper.ActionLink((Controller.Breweries b) => b.Get(this.Slug)),
 					Country = urlHelper.ActionLink((Controller.Countries b) => b.Get(this.Country.Slug)),
 				}

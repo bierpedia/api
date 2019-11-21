@@ -16,10 +16,10 @@ namespace Bierpedia.Api.Model {
 		public DTO.Country ToDTO(IUrlHelper urlHelper) {
 			
 			return new DTO.Country {
-				Id = Id,
+				Slug = Slug,
 				Name = Name,
 				Description = Description,
-				_Links = new DTO.BeerType.Links {
+				Links = new DTO.BeerType.BeerTypeLinks {
 					Self = urlHelper.ActionLink((Controller.Countries b) => b.Get(this.Slug)),
 				}
 			};

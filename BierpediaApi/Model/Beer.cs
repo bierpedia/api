@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.EntityFrameworkCore.Infrastructure;
@@ -26,10 +27,12 @@ namespace Bierpedia.Api.Model {
 		public DTO.Beer ToDTO(IUrlHelper urlHelper) {
 			
 			return new DTO.Beer {
-				Id = Id,
+				Slug = Slug,
 				Name = Name,
 				Description = Description,
-				_Links = new DTO.Beer.Links {
+				Breweries = this.BeerBreweries?.Select(bb => bb.Brewery.ToDTO(urlHelper)).ToList(),
+				BeerTypes = this.BeerBeerTypes?.Select(bb => bb.BeerType.ToDTO(urlHelper)).ToList(),
+				Links = new DTO.Beer.BeerLinks {
 					Self = urlHelper.ActionLink((Controller.Beers b) => b.Get(this.Slug)),
 					Breweries = urlHelper.ActionLink((Controller.Beers b) => b.Breweries(this.Slug)),
 					BeerTypes = urlHelper.ActionLink((Controller.Beers b) => b.BeerTypes(this.Slug)),

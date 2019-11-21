@@ -34,6 +34,12 @@ namespace Bierpedia.Api {
 			// configure keys for many-to-many relationship tables
 			modelBuilder.Entity<BeerBeerType>().HasKey(bbt => new { bbt.BeerId, bbt.BeerTypeId });
 			modelBuilder.Entity<BeerBrewery>().HasKey(bb => new { bb.BeerId, bb.BreweryId });
+
+			modelBuilder.Entity<Brewery>().HasIndex(b => b.Slug).IsUnique();
+			modelBuilder.Entity<BeerType>().HasIndex(b => b.Slug).IsUnique();
+			modelBuilder.Entity<Beer>().HasIndex(b => b.Slug).IsUnique();
+			modelBuilder.Entity<Country>().HasIndex(c => c.Slug).IsUnique();
+
 		}
 	}
 }

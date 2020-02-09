@@ -12,7 +12,7 @@ namespace Bierpedia.Api {
 		}
 		public DbSet<Beer> Beers { get; set; }
 
-		public DbSet<BeerType> BeerTypes { get; set; }
+		public DbSet<Model.BeerType> BeerTypes { get; set; }
 
 		public DbSet<Brewery> Breweries { get; set; }
 
@@ -36,7 +36,7 @@ namespace Bierpedia.Api {
 			modelBuilder.Entity<BeerBrewery>().HasKey(bb => new { bb.BeerId, bb.BreweryId });
 
 			modelBuilder.Entity<Brewery>().HasIndex(b => b.Slug).IsUnique();
-			modelBuilder.Entity<BeerType>().HasIndex(b => b.Slug).IsUnique();
+			modelBuilder.Entity<Model.BeerType>().HasIndex(b => b.Slug).IsUnique();
 			modelBuilder.Entity<Beer>().HasIndex(b => b.Slug).IsUnique();
 			modelBuilder.Entity<Country>().HasIndex(c => c.Slug).IsUnique();
 

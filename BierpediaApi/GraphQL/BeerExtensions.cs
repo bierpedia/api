@@ -2,7 +2,7 @@ using System;
 using System.Linq;
 using Bierpedia.Api.GraphQL.GraphQLTypes;
 using Bierpedia.Api.Model;
-using static Bierpedia.Api.GraphQL.Queries.BeerQuery;
+using static Bierpedia.Api.GraphQL.Queries.BeersQuery;
 
 namespace Bierpedia.Api.GraphQL.Extensions {
 

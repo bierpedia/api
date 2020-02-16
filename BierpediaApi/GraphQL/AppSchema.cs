@@ -4,7 +4,7 @@ using GraphQL.Types;
 
 namespace Bierpedia.Api.GraphQL {
 	public class AppSchema : Schema {
-		public AppSchema(BeerQuery beerQuery) {
+		public AppSchema(BeersQuery beerQuery) {
 				Query = beerQuery;
 		}
 	}

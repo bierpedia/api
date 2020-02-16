@@ -1,3 +1,4 @@
+using System.Collections.Immutable;
 using System;
 using System.Linq;
 using System.Linq.Expressions;
@@ -12,10 +13,10 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Bierpedia.Api.GraphQL.Queries {
 
-	public class BeerQuery : ObjectGraphType {
+	public class BeersQuery : ObjectGraphType {
 		private const string ARGUMENT_ORDER_BY = "orderBy";
 		private const string ARGUMENT_FILTER = "filter";
-		public BeerQuery(ApiContext apiContext) {
+		public BeersQuery(ApiContext apiContext) {
 			this.Connection<GraphQLTypes.BeerType>()
 				.Name("beers")
 				.Description("Gets pages of beers.")
@@ -52,7 +53,7 @@ namespace Bierpedia.Api.GraphQL.Queries {
 
 			var countTask = await query.CountAsync();
 			var result = query.OrderBy(sortBy)
-				.CursorPaginate(offset, first)
+				.OffsetPaginate(offset, first)
 				.ToListAsync();
 
 			return new Connection<Beer>() {

@@ -49,7 +49,7 @@ namespace Bierpedia.Api {
 			});
 
 			services.AddScoped<AppSchema>();
-			services.AddScoped<BeerQuery>();
+			services.AddScoped<BeersQuery>();
 
 			services.AddGraphQL(o => { o.ExposeExceptions = false; })
 				.AddGraphTypes(ServiceLifetime.Scoped);

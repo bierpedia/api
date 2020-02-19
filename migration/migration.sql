@@ -92,3 +92,8 @@ where
     tt_styles.taxonomy = 'biersorte' and
     tt_styles.term_id = styles.term_id;
 
+create table bierpedia.ratings
+select rating.id as id,
+       rating.wp_beer_post_ID as beer_id,
+       rating.grade as grade
+from wp_bierpedia_beer_grades as rating

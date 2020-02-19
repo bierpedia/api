@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -18,6 +19,10 @@ namespace Bierpedia.Api.Model {
 		public virtual ICollection<BeerBrewery> BeerBreweries { get; set; }  = null!;
 
 		public virtual ICollection<BeerStyle> BeerStyles { get; set; }  = null!;
+
+		public virtual ICollection<Rating> Ratings { get; set; }  = null!;
+
+		public double AverageGrade => Ratings.Average(a => a.Grade);
 
 		public Beer(string name, string slug, string description) : base(name, slug, description) { } 
 	}

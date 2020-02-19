@@ -1,28 +1,20 @@
 # Migrate data from wordpress database to new model
-# 
-# Run this inside the wordpress database and dump the tables with INSERT SQL statements
-# Fix the schema by substituting s/DB3018878/bierpedia/g 
-# The order in here is the order in which the tables must be restored
-# To restore the beer_types run
-#      `SET session_replication_role = 'replica';` 
-# before restoring, and 
-#      `SET session_replication_role = 'origin';`
-# after restoring to disable foreign key checks during the restore.
-# (Necessary because of the selfreference)
-
+#
 # breweries
-create table breweries select breweries.term_id as id,
-       breweries.name as name,
-       breweries.slug as slug,
-       tt.parent as country_id
+create table bierpedia.breweries
+select breweries.term_id as id,
+       breweries.name    as name,
+       breweries.slug    as slug,
+       tt.parent         as country_id
 from wp_terms as breweries,
      wp_term_taxonomy as tt
-where tt.taxonomy = 'brauerei' and
-      tt.term_id = breweries.term_id and
-      tt.parent != 0;
+where tt.taxonomy = 'brauerei'
+  and tt.term_id = breweries.term_id
+  and tt.parent != 0;
+
 
 # countries
-create table countries select country.term_id as id,
+create table bierpedia.countries select country.term_id as id,
        country.name as name,
        country.slug as slug,
        tt.description as description
@@ -32,30 +24,52 @@ where tt.taxonomy = 'brauerei' and
       tt.term_id = country.term_id and
       tt.parent = 0;
 
-# beertype
-create table beer_types select beertype.term_id as id,
-       beertype.name as name,
-       beertype.slug as slug,
-       tt.description as description,
-       IF(tt.parent = 0, NULL, tt.parent) as parent_id
-from wp_terms as beertype,
+# style
+create table bierpedia.styles select
+        style.term_id as id,
+        style.name as name,
+        style.slug as slug,
+        tt.description as description,
+IF(tt.parent = 0, NULL, tt.parent) as parent_id
+from wp_terms as style,
      wp_term_taxonomy as tt
 where tt.taxonomy = 'biersorte' and
-      tt.term_id = beertype.term_id;
+      tt.term_id = style.term_id;
+
+# concern
+create table bierpedia.concerns select concern.Id as id,
+       concern.post_title as name,
+       concern.post_name as slug,
+       concern.post_content as description
+from wp_posts as concern
+where concern.post_type = 'konzern' and
+      concern.post_status = 'publish';
 
 # beers
-create table beers select beer.Id as id,
+create table bierpedia.beers select beer.Id as id,
        beer.post_title as name,
        beer.post_name as slug,
-       beer.post_content as description
+       beer.post_content as description,
+       cast(m.meta_value as unsigned) as concern_id,
+       # to be safe, 2 digits left and right of decimal
+       cast(m2.meta_value as decimal(4,2)) as abv
 from wp_posts as beer
-where beer.post_type = 'bier' and
-      beer.post_status = 'publish';
+    # concern is stored in postmeta
+    JOIN wp_postmeta as m
+        ON m.post_id = beer.id
+    # alc is stored in postmeta
+    JOIN wp_postmeta as m2
+        ON m2.post_id = beer.id
+    where
+        m.meta_key = 'bierpedia_bier_meta_konzern' and
+        m2.meta_key = 'bierpedia_bier_meta_alc' and
+        beer.post_type = 'bier' and
+        beer.post_status = 'publish';
 
 # beers <-> breweries
-create table beer_breweries select beers.id as beer_id,
+create table bierpedia.beer_breweries select beers.id as beer_id,
        tt_brewery.term_id as brewery_id
-from beers,
+from bierpedia.beers as beers,
      wp_terms as breweries,
      wp_term_taxonomy as tt_brewery,
      wp_term_relationships as rel
@@ -65,16 +79,16 @@ where
     tt_brewery.taxonomy = 'brauerei' and
     tt_brewery.term_id = breweries.term_id;
 
-# beers <-> beer_types
-create table beer_beer_types select beers.id as beer_id,
-       beer_types.term_id as beer_type_id
-from beers,
-     wp_terms as beer_types,
-     wp_term_taxonomy as tt_beer_types,
+# beers <-> styles
+create table bierpedia.beer_styles select beers.id as beer_id,
+       styles.term_id as style_id
+from bierpedia.beers as beers,
+     wp_terms as styles,
+     wp_term_taxonomy as tt_styles,
      wp_term_relationships as rel
 where
     beers.id = rel.object_id and
-    rel.term_taxonomy_id = tt_beer_types.term_taxonomy_id and
-    tt_beer_types.taxonomy = 'biersorte' and
-    tt_beer_types.term_id = beer_types.term_id
+    rel.term_taxonomy_id = tt_styles.term_taxonomy_id and
+    tt_styles.taxonomy = 'biersorte' and
+    tt_styles.term_id = styles.term_id;
 

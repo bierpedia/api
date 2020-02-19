@@ -1,3 +1,0 @@
-[submodule "modules/dto"]
-	path = modules/dto
-	url = https://github.com/bierpedia/dto.git

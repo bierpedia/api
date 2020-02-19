@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Bierpedia.Api.Model {
-	public class Brewery : IDTOMappable<DTO.Brewery> {
+	public class Brewery {
 		public int Id { get; set; }
 			
 		[Required]
@@ -16,15 +16,5 @@ namespace Bierpedia.Api.Model {
 		[Required]
 		public virtual Country Country { get; set; }
 
-		public DTO.Brewery ToDTO(IUrlHelper urlHelper) {
-			return new DTO.Brewery {
-				Slug = Slug,
-				Name = Name,
-				Links = new DTO.Brewery.BreweryLinks {
-					Self = urlHelper.ActionLink((Controller.Breweries b) => b.Get(this.Slug)),
-					Country = urlHelper.ActionLink((Controller.Countries b) => b.Get(this.Country.Slug)),
-				}
-			};
-		}
 	}
 }

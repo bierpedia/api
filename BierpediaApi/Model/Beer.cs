@@ -8,7 +8,7 @@ using Newtonsoft.Json;
 
 namespace Bierpedia.Api.Model {
 	
-	public class Beer : IDTOMappable<DTO.Beer> {
+	public class Beer {
 		
 		public int Id { get; set; }
 
@@ -18,26 +18,15 @@ namespace Bierpedia.Api.Model {
 		[Required]
 		public string Slug { get; set; }
 		
-		public virtual ICollection<BeerBrewery> BeerBreweries { get; set; }
-
-		public virtual ICollection<BeerBeerType> BeerBeerTypes { get; set; }
-
 		public string Description { get; set; }
 
-		public DTO.Beer ToDTO(IUrlHelper urlHelper) {
-			
-			return new DTO.Beer {
-				Slug = Slug,
-				Name = Name,
-				Description = Description,
-				Breweries = this.BeerBreweries?.Select(bb => bb.Brewery.ToDTO(urlHelper)).ToList(),
-				BeerTypes = this.BeerBeerTypes?.Select(bb => bb.BeerType.ToDTO(urlHelper)).ToList(),
-				Links = new DTO.Beer.BeerLinks {
-					Self = urlHelper.ActionLink((Controller.Beers b) => b.Get(this.Slug)),
-					Breweries = urlHelper.ActionLink((Controller.Beers b) => b.Breweries(this.Slug)),
-					BeerTypes = urlHelper.ActionLink((Controller.Beers b) => b.BeerTypes(this.Slug)),
-				}
-			};
-		}
+		public decimal ABV { get; set; }
+
+		public int ConcernId { get; set; }
+		public virtual Concern Concern { get; set; }
+
+		public virtual ICollection<BeerBrewery> BeerBreweries { get; set; }
+
+		public virtual ICollection<BeerStyle> BeerStyles { get; set; }
 	}
 }

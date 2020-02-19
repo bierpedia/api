@@ -1,8 +1,9 @@
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Bierpedia.Api.Model {
-	public class Country {
+	public class Concern {
 		public int Id { get; set; }
 
 		[Required]
@@ -13,5 +14,6 @@ namespace Bierpedia.Api.Model {
 		
 		public string Description { get; set; }
 		
+		public virtual List<Beer> Beers { get; set; }
 	}
 }

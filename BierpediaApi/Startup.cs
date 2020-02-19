@@ -4,10 +4,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using Bierpedia.Api.GraphQL;
-using Bierpedia.Api.GraphQL.Queries;
-using GraphQL;
-using GraphQL.Server;
-using GraphQL.Server.Ui.Playground;
+using HotChocolate;
+using HotChocolate.AspNetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -21,6 +19,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
+
 
 namespace Bierpedia.Api {
 	public class Startup {
@@ -48,12 +47,7 @@ namespace Bierpedia.Api {
 				options.AllowSynchronousIO = true;
 			});
 
-			services.AddScoped<AppSchema>();
-			services.AddScoped<BeersQuery>();
-
-			services.AddGraphQL(o => { o.ExposeExceptions = false; })
-				.AddGraphTypes(ServiceLifetime.Scoped);
-
+			services.AddGraphQL(SchemaBuilder.New().AddQueryType<QueryType>());
 		}
 
 		public void Configure(IApplicationBuilder app, IWebHostEnvironment env) {
@@ -88,9 +82,8 @@ namespace Bierpedia.Api {
 				endpoints.MapControllers();
 			});
 
-			app.UseGraphQL<AppSchema>();
-			app.UseGraphQLPlayground(options: new GraphQLPlaygroundOptions());
- 
+			app.UseGraphQL();
+			app.UsePlayground();
 		}
 	}
 }

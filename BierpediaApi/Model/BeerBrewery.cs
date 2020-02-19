@@ -2,7 +2,8 @@
 namespace Bierpedia.Api.Model {
 
 	/// <summary>
-	/// 
+ 	/// Many-To-Many relationship between Beer and Brewery
+
 	/// </summary>
 	/// <remarks>
 	/// EF Core does not support many-to-many relationships yet, see

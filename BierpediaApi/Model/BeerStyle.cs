@@ -10,9 +10,9 @@ namespace Bierpedia.Api.Model {
 	/// </remarks>
 	public class BeerStyle {
 		public int BeerId { get; set; }
-		public virtual Beer Beer { get; set; }
+		public virtual Beer Beer { get; set; } = null!;
 		public int StyleId { get; set; }
 		
-		public virtual Style Style { get; set; }
+		public virtual Style Style { get; set; } = null!;
 	}
 }

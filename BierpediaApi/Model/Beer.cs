@@ -8,25 +8,17 @@ using Newtonsoft.Json;
 
 namespace Bierpedia.Api.Model {
 	
-	public class Beer {
+	public class Beer : Entity {
 		
-		public int Id { get; set; }
-
-		[Required]
-		public string Name { get; set; }
-
-		[Required]
-		public string Slug { get; set; }
-		
-		public string Description { get; set; }
-
 		public decimal ABV { get; set; }
 
 		public int ConcernId { get; set; }
-		public virtual Concern Concern { get; set; }
+		public virtual Concern Concern { get; set; }  = null!;
 
-		public virtual ICollection<BeerBrewery> BeerBreweries { get; set; }
+		public virtual ICollection<BeerBrewery> BeerBreweries { get; set; }  = null!;
 
-		public virtual ICollection<BeerStyle> BeerStyles { get; set; }
+		public virtual ICollection<BeerStyle> BeerStyles { get; set; }  = null!;
+
+		public Beer(string name, string slug, string description) : base(name, slug, description) { } 
 	}
 }

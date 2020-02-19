@@ -11,8 +11,8 @@ namespace Bierpedia.Api.Model {
 	/// /// </remarks>
 	public class BeerBrewery {
 		public int BeerId { get; set; }
-		public virtual Beer Beer { get; set; }
+		public virtual Beer Beer { get; set; } = null!;
 		public int BreweryId { get; set; }
-		public virtual Brewery Brewery { get; set; }
+		public virtual Brewery Brewery { get; set; } = null!;
 	}
 }

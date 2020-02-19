@@ -3,17 +3,10 @@ using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Bierpedia.Api.Model {
-	public class Concern {
-		public int Id { get; set; }
-
-		[Required]
-		public string Name { get; set; }
-
-		[Required]
-		public string Slug { get; set; }
+	public class Concern : Entity {
 		
-		public string Description { get; set; }
-		
-		public virtual List<Beer> Beers { get; set; }
+		public virtual List<Beer> Beers { get; set; } = null!;
+
+		public Concern(string name, string slug, string description) : base(name, slug, description) { }
 	}
 }

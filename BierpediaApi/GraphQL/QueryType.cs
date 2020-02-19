@@ -10,12 +10,12 @@ namespace Bierpedia.Api.GraphQL {
 		: ObjectType<Query> {
 
 		protected override void Configure(IObjectTypeDescriptor<Query> descriptor) {
-			descriptor.Field(t => t.GetBeers(default)).Type<NonNullType<ListType<BeerType>>>()
+			descriptor.Field(t => t.GetBeers(default!)).Type<NonNullType<ListType<BeerType>>>()
 				.UsePaging<BeerType>()
 				.UseFiltering<BeerFilterType>()
 				.UseSorting();
 
-			descriptor.Field(t => t.GetBreweries(default)).Type<NonNullType<ListType<BreweryType>>>()
+			descriptor.Field(t => t.GetBreweries(default!)).Type<NonNullType<ListType<BreweryType>>>()
 				.UsePaging<BreweryType>();
 		}
 	}

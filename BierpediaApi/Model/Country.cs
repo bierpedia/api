@@ -1,17 +1,10 @@
-using System.ComponentModel.DataAnnotations;
-using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
 
 namespace Bierpedia.Api.Model {
-	public class Country {
-		public int Id { get; set; }
+	public class Country : Entity {
 
-		[Required]
-		public string Name { get; set; }
-
-		[Required]
-		public string Slug { get; set; }
+		public virtual List<Brewery> Breweries { get; set; } = null!;
 		
-		public string Description { get; set; }
-		
+		public Country(string name, string slug, string description) : base(name, slug, description) { }
 	}
 }

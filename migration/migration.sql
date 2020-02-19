@@ -5,13 +5,13 @@ create table bierpedia.breweries
 select breweries.term_id as id,
        breweries.name    as name,
        breweries.slug    as slug,
+       tt.description    as description,
        tt.parent         as country_id
 from wp_terms as breweries,
      wp_term_taxonomy as tt
 where tt.taxonomy = 'brauerei'
   and tt.term_id = breweries.term_id
   and tt.parent != 0;
-
 
 # countries
 create table bierpedia.countries select country.term_id as id,

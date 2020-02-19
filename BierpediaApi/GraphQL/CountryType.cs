@@ -3,10 +3,10 @@ using Bierpedia.Api.Model;
 using HotChocolate.Types;
 
 namespace Bierpedia.Api.GraphQL {
-	public class CountryType : ObjectType<Country> {
+	public class CountryType : EntityType<Country> {
 		
 		protected override void Configure(IObjectTypeDescriptor<Country> descriptor) {
-			descriptor.Field(b => b.Id).Ignore();
+			
 		}
 	}
 }

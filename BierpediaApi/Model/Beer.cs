@@ -22,7 +22,7 @@ namespace Bierpedia.Api.Model {
 
 		public virtual ICollection<Rating> Ratings { get; set; }  = null!;
 
-		public double AverageGrade => Ratings.Average(a => a.Grade);
+		public double AverageGrade => Ratings.Select(r => r.Grade).DefaultIfEmpty(0).Average();
 
 		public Beer(string name, string slug, string description) : base(name, slug, description) { } 
 	}

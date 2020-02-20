@@ -13,7 +13,8 @@ namespace Bierpedia.Api.GraphQL {
 			return apiContext.Beers.Include(beer => beer.BeerBreweries)
 				.ThenInclude(bb => bb.Brewery)
 				.Include(beer => beer.BeerStyles)
-				.ThenInclude(bt => bt.Style);
+				.ThenInclude(bt => bt.Style)
+				.Include(b => b.Ratings);
 		}
 
 		public IEnumerable<Brewery> GetBreweries([Service] ApiContext apiContext){ 

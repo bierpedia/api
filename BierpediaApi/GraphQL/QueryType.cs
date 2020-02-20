@@ -15,6 +15,8 @@ namespace Bierpedia.Api.GraphQL {
 				.UseFiltering<BeerFilterType>()
 				.UseSorting();
 
+			descriptor.Field(t => t.GetBeer(default!, default!)).Type<BeerType>();
+
 			descriptor.Field(t => t.GetBreweries(default!)).Type<NonNullType<ListType<BreweryType>>>()
 				.UsePaging<BreweryType>();
 		}

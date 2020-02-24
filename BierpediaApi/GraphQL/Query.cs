@@ -17,6 +17,10 @@ namespace Bierpedia.Api.GraphQL {
 				.Include(b => b.Ratings);
 		}
 
+		public Beer GetBeer([Service] ApiContext apiContext, string slug){
+			return apiContext.Beers.Where(b => b.Slug == slug).SingleOrDefault();
+		}
+
 		public IEnumerable<Brewery> GetBreweries([Service] ApiContext apiContext){ 
 			return apiContext.Breweries.Include(b => b.Country);
 		}

@@ -45,7 +45,7 @@ echo "Wait for postgres to come up"
 while ! docker exec -i $PG_NAME psql -U bierpedia -c '\l' &> /dev/null ; do echo "Wait...";  sleep 1; done
 
 echo "Migrating data to postgres"
-pgloader mysql://root:root@localhost:3307/bierpedia postgresql://bierpedia:bierpedia@localhost:5433/bierpedia
+docker run --rm --name pgloader dimitri/pgloader:latest pgloader mysql://root:root@host.docker.internal:3307/bierpedia postgresql://bierpedia:bierpedia@host.docker.internal:5433/bierpedia
 
 echo "Dumping data from postgres"
 docker exec -i $PG_NAME pg_dump -Fc -U bierpedia bierpedia > bierpedia.dump

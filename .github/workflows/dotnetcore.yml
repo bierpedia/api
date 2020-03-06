@@ -23,7 +23,7 @@ jobs:
         - name: Publish
           uses: elgohr/Publish-Docker-Github-Action@master
           with:
-            name: ${{ GITHUB_REPOSITORY }}/api
+            name: ${{ github.repository }}/api
             username: ${{ github.actor }}
             password: ${{ secrets.GITHUB_TOKEN }}
             registry: docker.pkg.github.com

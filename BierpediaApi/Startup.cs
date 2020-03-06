@@ -58,8 +58,8 @@ namespace Bierpedia.Api {
 				endpoints.MapControllers();
 			});
 
-			app.UseGraphQL();
-			app.UsePlayground();
+			app.UseGraphQL("/graphql");
+			app.UsePlayground("/graphql");
 		}
 	}
 }

@@ -20,10 +20,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
         - uses: actions/checkout@v1
-        - name: Publish to Registry
+        - name: Publish
           uses: elgohr/Publish-Docker-Github-Action@master
           with:
-            name: bierpeida/api/api
+            name: ${{ GITHUB_REPOSITORY }}/api
             username: ${{ github.actor }}
             password: ${{ secrets.GITHUB_TOKEN }}
             registry: docker.pkg.github.com

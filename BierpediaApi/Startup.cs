@@ -38,7 +38,10 @@ namespace Bierpedia.Api {
 				options.AllowSynchronousIO = true;
 			});
 
-			services.AddGraphQL(SchemaBuilder.New().AddQueryType<QueryType>());
+			services.AddGraphQL(SchemaBuilder.New()
+				.AddQueryType<QueryType>()
+				.AddType(new PaginationAmountType(20)));
+				
 			services.AddErrorFilter<ErrorFilter>();
 		}
 

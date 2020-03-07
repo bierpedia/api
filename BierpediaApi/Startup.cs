@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.ResponseCaching;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -41,11 +42,11 @@ namespace Bierpedia.Api {
 			services.AddGraphQL(SchemaBuilder.New()
 				.AddQueryType<QueryType>()
 				.AddType(new PaginationAmountType(20)));
-				
+
 			services.AddErrorFilter<ErrorFilter>();
 		}
 
-		public void Configure(IApplicationBuilder app, IWebHostEnvironment env) {
+		public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ApiContext apiContext) {
 			app.UseCors(
 				options => options.WithOrigins("http://localhost:8080", "http://localhost:5000").AllowAnyMethod().AllowAnyHeader()
 			);
@@ -60,6 +61,9 @@ namespace Bierpedia.Api {
 
 			app.UseGraphQL("/graphql");
 			app.UsePlayground("/graphql");
+
+			// automatically migrate database on startup
+			apiContext.Database.Migrate();
 		}
 	}
 }
